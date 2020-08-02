@@ -1,0 +1,166 @@
+<app-header></app-header>
+
+<section class="breadcrumb-area bc-awards">
+  <img class="bc-img" src="assets/images/breadcrumb/awards.png" alt="">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4 class="title">
+          Accounts
+        </h4>
+        <ul class="breadcrumb-list">
+          <li>
+            <a routerLink="/">
+              <i class="fas fa-home"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <span><i class="fas fa-chevron-right"></i> </span>
+          </li>
+          <li>
+            <a routerLink="/wallet">Wallet</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="awards-area">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="section-heading">
+          <h5 class="subtitle">
+            Previous Winners
+          </h5>
+          <h2 class="title">
+            Deposit Bonus
+          </h2>
+          <p class="text">
+            We update our site regularly; more and more winners are added every day!
+            To locate the most recent winner's
+            information
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 ">
+        <div class="single-awards">
+          <div class="content">
+            <img src="assets/images/feature/payout.png" alt="">
+            <h4 class="title">
+              Wallet Balance
+            </h4>
+            <p>
+              <i class="fas fa-wallet"></i>NGN {{Balance}}
+            </p>
+            <a href="#" class="mybtn2" data-toggle="modal" data-target="#fund-wallet">Fund Wallet</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg 6 col-md-offset-2 activities_new">
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-all-bets" role="tabpanel"
+            aria-labelledby="pills-all-bets-tab">
+            <div class="responsive-table">
+              <table class="table table-bordered table-striped" style="box-shadow:0 0 15px rgba(0, 0, 0, .21)"
+                *ngIf="paynow">
+                <thead>
+                  <tr>
+                    <th>Transaction Id</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{options.ref}}</td>
+                    <td>Funding Wallet with: &#8358;{{formatedAmount}}</td>
+                    <td>&#8358;{{formatedAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><strong>Total:</strong></td>
+                    <td>&#8358; {{formatedAmount}}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <button class="btn btn-block btn-success" angular4-paystack
+                    [key]="pk_test_62e65601e9e5df85272c1585f6a67479ded1eb17" [email]="options.email"
+                    [amount]="options.amount" [ref]="options.ref" [class]="'btn btn-primary'"
+                    (paymentInit)="paymentInit()" (close)="paymentCancel()" (callback)="paymentDone($event)">
+                    Fund Now
+                  </button>
+                </tfoot>
+              </table>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">DATE</th>
+                    <th scope="col">BET AMOUNT</th>
+                    <th scope="col">TYPE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let transaction of Transactions">
+                    <td>
+                      {{transaction.created_at}}
+                    </td>
+                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.transaction_type}}</td>
+                  </tr>
+                  <tr *ngIf="!Transactions">
+                    <td colspan="3">
+                      <h3>No Transactions Record</h3>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>
+
+<div class="modal fade fund-wallet-modal" id="fund-wallet" tabindex="-1" role="dialog" aria-labelledby="fund-wallet"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-body">
+        <div class="logo-area">
+          <img class="logo" src="assets/images/logo.png" alt="" />
+        </div>
+        <div class="header-area">
+          <p class="sub-title">Enter your details below.</p>
+        </div>
+        <div class="form-area">
+          <form [formGroup]="walletForm" (ngSubmit)="generateInvoice()">
+            <div class="form-group">
+              <label for="amount">Enter Amount To Fund</label>
+              <input formControlName="amount" type="number" class="input-field" placeholder="Enter Amount To Fund"
+                required="" />
+              <div *ngIf="submitted && walletForm.controls.amount.errors" class="alert alert-danger">
+                <div *ngIf="walletForm.controls.amount.errors.required">amount is required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="mybtn1">
+                Proceed
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
